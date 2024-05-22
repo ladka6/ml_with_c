@@ -1,0 +1,3 @@
+/Users/ladka6/Projects/ml_with_c/cmake-build-debug/CMakeFiles/c_test.dir
+/Users/ladka6/Projects/ml_with_c/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/ladka6/Projects/ml_with_c/cmake-build-debug/CMakeFiles/rebuild_cache.dir
