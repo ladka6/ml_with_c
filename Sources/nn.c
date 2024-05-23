@@ -3,6 +3,7 @@
 //
 #include "../Headers/nn.h"
 #include <stdio.h>
+#include <math.h>
 
 double single_in_single_out(double input, double weight) {
     return (input * weight);
@@ -55,4 +56,51 @@ void multiple_input_multiple_output_nn(double * input_vector,
     matrix_vector_multiply(input_vector,INPUT_LEN,output_vector,OUTPUT_LEN,weight_matrix);
 }
 
+void hidden_layer_nn(double * input_vector,
+                     int INPUT_LEN,
+                     int HIDDEN_LEN,
+                     double in_to_hid_weights[HIDDEN_LEN][INPUT_LEN],
+                     int OUTPUT_LEN,
+                     double hid_to_out_weights[OUTPUT_LEN][HIDDEN_LEN],
+                     double * output_vector) {
+
+    matrix_vector_multiply(input_vector, INPUT_LEN,hidden_pred_vector, HIDDEN_LEN, in_to_hid_weights);
+    matrix_vector_multiply(hidden_pred_vector, HIDDEN_LEN, output_vector, OUTPUT_LEN, hid_to_out_weights);
+
+}
+
+double find_err(double input, double weight, double expected_value) {
+    return  powf((input*weight) - expected_value, 2);
+}
+
+double find_err_simple(double yhat, double y) {
+    return powf((yhat-y),2);
+}
+
+void brute_force_learning(double input,
+                          double weight,
+                          double expected_value,
+                          double step_amount,
+                          int epochs) {
+    double prediction, error;
+    double up_prediction, up_error, down_prediction, down_error;
+
+    for(int i = 0; i < epochs; i++) {
+        prediction = input*weight;
+        error = powf((prediction- expected_value),2);
+        printf("Error : %f Prediction : %f \n", error, prediction);
+
+        up_prediction = input * (weight + step_amount);
+        up_error = powf((expected_value - up_prediction), 2);
+
+        down_error = input * (weight - step_amount);
+        down_error = powf((expected_value - down_prediction), 2);
+
+        if(down_error < up_error)
+            weight = weight - step_amount;
+        if(down_error > up_error)
+            weight = weight + step_amount;
+
+    }
+}
 
